@@ -1,0 +1,14 @@
+#################################comandos error pga
+SHOW PARAMETER pga;
+
+SELECT
+  name,
+  value
+FROM v$pgastat;
+
+
+SELECT
+  program,
+  pga_used_mem/1024/1024 MB
+FROM v$process
+ORDER BY pga_used_mem DESC;
