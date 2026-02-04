@@ -1,0 +1,8 @@
+cliente, pais, monto
+Ana,CO,120.5
+Luis,CO,85
+Ana,MX,NaN
+Maria,CO,210
+Luis,CO,error
+Carlos,,99.99
+Pedro,CO,150
