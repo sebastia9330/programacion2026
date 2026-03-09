@@ -40,3 +40,10 @@
     foreach($frutaa as $fruta){
         echo $fruta.'<br>';
     }
+
+
+    if(isset($_POST['numero']) && $_POST['numero']!=''){
+        echo 'Variable definida hoy';
+    }else{
+        echo 'Variable no definida hoy';
+    }
