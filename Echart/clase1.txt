@@ -1,0 +1,87 @@
+Sí, te enseño, y tu perfil ayuda mucho. Lo más difícil de un tablero no es dibujar el gráfico, es entender los datos, y eso ya lo dominas. JavaScript lo vas a aprender pensando en Python y en Polars, así que vas a avanzar más rápido que alguien que empieza de cero.
+
+Cuánto toma
+
+Calculando una hora al día en días hábiles, son unas 7–8 semanas hasta tener el tablero de Colsubsidio funcionando en web con datos reales. Con más tiempo al día se acorta.
+
+Semana	Tema	Al final sabrás…
+1	JavaScript básico (con analogías de Python)	Manejar arreglos y objetos, filtrar, agrupar, sumar
+2	HTML, CSS y el navegador	Armar el esqueleto vertical del tablero y usar las DevTools (F12)
+3	fetch, JSON y asincronía	Traer datos de una URL y pintarlos en la página
+4	ECharts	Barras, líneas, mixto, medidor y actualización en vivo
+5	PHP básico + API	Consultar una vista de Oracle y devolver JSON
+6	Filtros y filtrado cruzado	Que un clic en una sede filtre todo el tablero
+7–8	Página de Operación completa + resto de páginas	Tablero real, con seguridad básica (login, consultas parametrizadas)
+
+Meto PHP en la semana 5 porque, si los aplicativos de la empresa están en PHP, lo lógico es que la API del tablero también lo esté. Así la puede mantener tu equipo y se publica en los mismos servidores. Más adelante te pregunto qué base usan esos aplicativos y cómo se conectan a Oracle, porque de eso depende cómo armamos la API.
+
+Cómo funciona la tarea
+
+Cada sesión te dejo una lección corta y una tarea. Tú la haces con tus propias manos, aunque falle. Cuando vuelvas, me pegas tu código y los errores que te salieron, me dices en qué semana vas, y lo revisamos antes de seguir. Los errores son la mejor parte: ahí es donde se aprende.
+
+Lección 1: JavaScript para alguien que sabe Python
+
+No tienes que instalar nada. Abre Chrome, presiona F12, ve a la pestaña Console y escribe ahí. Es como el intérprete de Python.
+
+Python	JavaScript
+lista = [1, 2, 3]	const lista = [1, 2, 3];
+d = {"sede": "Norte", "hombres": 42}	const d = { sede: "Norte", hombres: 42 };
+d["sede"]	d.sede
+print(x)	console.log(x)
+f"Sede {s}"	`Sede ${s}` (comillas invertidas)
+for x in lista:	for (const x of lista) { ... }
+[x * 2 for x in lista]	lista.map(x => x * 2)
+[x for x in lista if x > 1]	lista.filter(x => x > 1)
+sum(lista)	lista.reduce((acum, x) => acum + x, 0)
+None	null (y también existe undefined)
+==	=== (usa siempre el de tres)
+
+La misma idea en Polars:
+
+js
+// Polars: df.filter(pl.col("sede") == "Norte")
+filas.filter(f => f.sede === "Norte")
+
+// Polars: df.with_columns((pl.col("a") / pl.col("b")).alias("pct"))
+filas.map(f => ({ ...f, pct: f.a / f.b }))
+
+const es para algo que no vas a reasignar y let para algo que sí. Nunca uses var, que es la forma vieja.
+
+📝 Tarea 1
+
+Pega esto en la consola. Son filas como las de tu hoja DATA:
+
+js
+const filas = [
+  { sede: "Norte",    mes: "Ene", meta: 20, ejecutadas: 18 },
+  { sede: "Norte",    mes: "Feb", meta: 20, ejecutadas: 22 },
+  { sede: "Sur",      mes: "Ene", meta: 15, ejecutadas: 15 },
+  { sede: "Sur",      mes: "Feb", meta: 15, ejecutadas: 11 },
+  { sede: "Calle 26", mes: "Ene", meta: 10, ejecutadas: 7  },
+  { sede: "Calle 26", mes: "Feb", meta: 10, ejecutadas: 12 }
+];
+
+Escribe el código para:
+
+Mostrar el total de revistas ejecutadas (usa reduce).
+Obtener solo las filas donde no se cumplió la meta (usa filter).
+Agregar a cada fila un campo pct con el % de cumplimiento, redondeado a 1 decimal (usa map; pista: Math.round() o .toFixed(1)).
+Agrupar por sede y sumar meta y ejecutadas, como un group_by().agg(). Este es el difícil: hazlo con un for...of y un objeto vacío {} como acumulador.
+Bonus: con el resultado del punto 4, arma dos arreglos, etiquetas (nombres de sede) y valores (ejecutadas). Esa es exactamente la forma que necesita un gráfico de barras, y la vas a usar en la semana 4.
+
+Si te trabas más de 20 minutos en un punto, sáltalo y tráeme lo que intentaste. Eso también cuenta.
+
+¿Cuánto tiempo al día le puedes dedicar realmente? Con eso ajusto el ritmo. Y si quieres, te dejo este plan como documento para que lo tengas a mano y marques tu avance semana a semana.
+
+
+Tarea 1 ampliada (para que sean 2 horas)
+
+Los puntos 1 a 5 que te dejé quedan igual. Agrega estos:
+
+Ordena el resultado del punto 3 de mayor a menor pct con .sort(). Antes de hacerlo, lee qué hace sort con números si no le pasas una función de comparación. Te va a sorprender.
+Convierte el punto 4 en una función reutilizable: function resumenPorSede(filas) { ... } que reciba las filas y devuelva el agrupado. Pruébala agregando una fila nueva de otra sede, por ejemplo “Kennedy”, y verifica que aparezca sin tocar la función.
+Lectura (20–30 min): en MDN en español (developer.mozilla.org/es), busca Array.prototype.map, filter y reduce. Es la documentación de referencia de JavaScript, el equivalente a la documentación oficial de Python, y la vas a usar todo el tiempo.
+
+Cómo trabajar la tarea: escribe el código en un archivo tarea1.js en VS Code y pégalo en la consola de Chrome (F12) para probarlo. Así no se te pierde lo que hiciste y mañana me lo traes completo, con los errores que te hayan salido.
+
+Mañana, en tu hora conmigo, empezamos revisando tu tarea y luego pasamos a funciones y objetos más a fondo (día 2).
