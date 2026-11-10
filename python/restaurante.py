@@ -17,8 +17,8 @@ class Restaurante:
             print(f'Lo siento, la mensa {numero} esta reservada')
 
     def pedidos(self, numero, items):
-        if numero not in self
-        self.ordenes[numero] = items
+        if numero not in self:
+            self.ordenes[numero] = items
 
 restaurante = Restaurante()
 print(restaurante)
